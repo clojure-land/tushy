@@ -1,0 +1,22 @@
+<config>
+  <site>
+    <name>Planet Clojure</name>
+    <link>http://planet.clojure.in</link>
+    <owner_name>Baishampayan Ghose</owner_name>
+    <owner_email>b.ghose@gmail.com</owner_email>
+    <items_per_page>50</items_per_page>
+    <html_template>/tmp/planet/index.html</html_template>
+    <atom_template>/tmp/planet/atom.xml</atom_template>
+    <output_dir>/tmp/planet/output</output_dir>
+  </site>
+
+  <blog>
+    <author>Baishampayan Ghose</author>
+    <feed>http://freegeek.in/blog/tag/clojure/feed/</feed>
+  </blog>
+
+  <blog>
+    <author>Learning Clojure</author>
+    <feed>http://learnclojure.blogspot.com/feeds/posts/default</feed>
+  </blog>
+</config>
