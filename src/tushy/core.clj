@@ -2,9 +2,9 @@
   (:require [clojure.zip :as zip]
             [clojure.xml :as xml]
             [clojure.contrib.duck-streams :as streams]
-            [net.cgrand.enlive-html :as html]
-            [clj-time.format])
-  (:use clojure.contrib.zip-filter.xml))
+            [net.cgrand.enlive-html :as html])
+  (:use [clojure.contrib.zip-filter.xml]
+        [clj-time.format]))
 
 (defn zip-str [s]
   (zip/xml-zip (xml/parse (java.io.ByteArrayInputStream. (.getBytes s)))))
