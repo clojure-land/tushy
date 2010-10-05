@@ -82,3 +82,15 @@
                            (:author (first a-planet-map)))
                  (consolidated-feed-map (rest a-planet-map)))))
 
+(defn dated-feed-map
+  "Convert the date strings in the consolidated feed map to date objects"
+  [a-consolidated-map]
+  (for [m a-consolidated-map]
+    (assoc m :pubDateObj (return-date-object (:pubDate m)))))
+
+(defn sorted-feed-map
+  "Sort a dated feed map on it's date object"
+  [a-dated-map]
+  (sort-by #(clj-time.coerce/to-long (get % :pubDateObj))
+           >
+           a-dated-map))
