@@ -2,18 +2,22 @@
   (:require [clojure.zip :as zip]
             [clojure.xml :as xml]
             [clojure.contrib.duck-streams :as streams]
-            [net.cgrand.enlive-html :as html])
-  (:use [clojure.contrib.zip-filter.xml]
-        [clj-time.format]))
+            [net.cgrand.enlive-html :as html]
+            [clj-time.core]
+            [clj-time.format]
+            [clj-time.coerce])
+  (:use [clojure.contrib.zip-filter.xml]))
 
 (defn zip-str [s]
   (zip/xml-zip (xml/parse (java.io.ByteArrayInputStream. (.getBytes s)))))
 
-(def xml-planet-info (zip-str (streams/slurp* "./config.xml.sample")))
-
-(def planet-map (map #(zipmap [:author :feed] [%1 %2])
-                     (xml-> xml-planet-info :blog :author text)
-                     (xml-> xml-planet-info :blog :feed text)))
+(defn planet-map
+  "Take an XML file and return a sequence of maps containing the author of each blog and the feed of his blog"
+  [xml-file-name]
+  (let [xml-planet-info (zip-str (streams/slurp* xml-file-name))]
+    (map #(zipmap [:author :feed] [%1 %2])
+         (xml-> xml-planet-info :blog :author text)
+         (xml-> xml-planet-info :blog :feed text))))
 
 (defn fetch-feed
   "Fetch contents of blog feed"
@@ -42,23 +46,23 @@
   "Create a map for the contents of each feed"
   [feed-address feed-author]
   (let [feed (fetch-feed feed-address)
-        ftype (feed-type feed)]
+        ftype (feed-type feed)
+        item-feed (html/select feed [(:item (feed-tag-definitions ftype))])]
     (map #(zipmap [:title :pubDate :author] [%1 %2 feed-author]) ;Removed post for testing
-         (html/select feed [(:item (feed-tag-definitions ftype))
-                            (:title (feed-tag-definitions ftype))
-                            text])
-         (html/select feed [(:item (feed-tag-definitions ftype))
-                            (:pubDate (feed-tag-definitions ftype))
-                            text])
-         ;; (html/select feed [(:item (feed-tag-definitions ftype))
-         ;;                    (:post (feed-tag-definitions ftype))
-         ;;                    text])
+         (html/select item-feed [(:title (feed-tag-definitions ftype))
+                                 text])
+         (html/select item-feed [(:pubDate (feed-tag-definitions ftype))
+                                 text])
+         ;; (html/select item-feed [(:post (feed-tag-definitions ftype))
+         ;;                         text])
          )))
 
 (defn consolidated-feed-map
   "Create a single map containing the posts from all the feeds mentioned in the planet-map"
-  [m]
+  [a-planet-map]
   (cond
-   (empty? m) (quote ())
-   :else (concat (feed-map (:feed (first m)) (:author (first m)))
-               (consolidated-feed-map (rest m)))))
+   (empty? a-planet-map) (quote ())
+   :else (concat (feed-map (:feed (first a-planet-map))
+                           (:author (first a-planet-map)))
+                 (consolidated-feed-map (rest a-planet-map)))))
+
