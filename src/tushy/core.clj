@@ -8,6 +8,10 @@
             [clj-time.coerce])
   (:use [clojure.contrib.zip-filter.xml]))
 
+(def formatters [(clj-time.format/formatters :date-time)
+                 (clj-time.format/formatters :date-time-no-ms)
+                 (clj-time.format/formatter "EEE, d MMM yyyy HH:mm:ss Z")])
+
 (defn zip-str [s]
   (zip/xml-zip (xml/parse (java.io.ByteArrayInputStream. (.getBytes s)))))
 
