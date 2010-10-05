@@ -11,7 +11,7 @@
 
 (def xml-planet-info (zip-str (streams/slurp* "./config.xml.sample")))
 
-(def planet-map (map #(hash-map :author %1 :feed %2)
+(def planet-map (map #(zipmap [:author :feed] [%1 %2])
                      (xml-> xml-planet-info :blog :author text)
                      (xml-> xml-planet-info :blog :feed text)))
 
@@ -43,7 +43,7 @@
   [feed-address feed-author]
   (let [feed (fetch-feed feed-address)
         ftype (feed-type feed)]
-    (map #(hash-map :title %1 :pubDate %2 :author feed-author) ;Removed post for testing
+    (map #(zipmap [:title :pubDate :author] [%1 %2 feed-author]) ;Removed post for testing
          (html/select feed [(:item (feed-tag-definitions ftype))
                             (:title (feed-tag-definitions ftype))
                             text])
