@@ -12,7 +12,19 @@
                  (clj-time.format/formatters :date-time-no-ms)
                  (clj-time.format/formatter "EEE, d MMM yyyy HH:mm:ss Z")])
 
-(defn zip-str [s]
+(defn return-date-object
+  "Take a date-string and return a date-object by running the list of formatters on the string"
+  [s]
+  (first (filter (comp not nil?)
+                 (for [f formatters
+                       :let [date (try
+                                    (clj-time.format/parse f s)
+                                    (catch Exception _ nil))]]
+                   date))))
+
+(defn zip-str
+  "Parse an xml file"
+  [s]
   (zip/xml-zip (xml/parse (java.io.ByteArrayInputStream. (.getBytes s)))))
 
 (defn planet-map
