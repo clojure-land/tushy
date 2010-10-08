@@ -2,23 +2,24 @@
   (:require [clojure.zip :as zip]
             [clojure.xml :as xml]
             [clojure.contrib.duck-streams :as streams]
-            [net.cgrand.enlive-html :as html]
-            [clj-time.core]
-            [clj-time.format]
-            [clj-time.coerce])
-  (:use [clojure.contrib.zip-filter.xml]))
+            [net.cgrand.enlive-html :as html])
+  (:use [clojure.contrib.zip-filter.xml]
+        [clj-time.format
+         :only [formatters formatter parse]]
+        [clj-time.coerce
+         :only [to-long]]))
 
-(def formatters [(clj-time.format/formatters :date-time)
-                 (clj-time.format/formatters :date-time-no-ms)
-                 (clj-time.format/formatter "EEE, d MMM yyyy HH:mm:ss Z")])
+(def date-formatters [(formatters :date-time)
+                 (formatters :date-time-no-ms)
+                 (formatter "EEE, d MMM yyyy HH:mm:ss Z")])
 
 (defn return-date-object
   "Take a date-string and return a date-object by running the list of formatters on the string"
   [s]
   (first (filter (comp not nil?)
-                 (for [f formatters
+                 (for [f date-formatters
                        :let [date (try
-                                    (clj-time.format/parse f s)
+                                    (parse f s)
                                     (catch Exception _ nil))]]
                    date))))
 
@@ -91,6 +92,6 @@
 (defn sorted-feed-map
   "Sort a dated feed map on it's date object"
   [a-dated-map]
-  (sort-by #(clj-time.coerce/to-long (get % :pubDateObj))
+  (sort-by #(to-long (get % :pubDateObj))
            >
            a-dated-map))
