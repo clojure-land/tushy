@@ -5,7 +5,7 @@
     <owner_name>Baishampayan Ghose</owner_name>
     <owner_email>b.ghose@gmail.com</owner_email>
     <items_per_page>50</items_per_page>
-    <html_template>./tushy/src/tushy/index.html</html_template>
+    <html_template>./tushy/src/tushy/html_templates/index.html</html_template>
     <atom_template>./tushy/src/tushy/atom.xml</atom_template>
     <output_dir>./tushy/src/tushy/output</output_dir>
     <site_description>
