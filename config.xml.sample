@@ -5,9 +5,15 @@
     <owner_name>Baishampayan Ghose</owner_name>
     <owner_email>b.ghose@gmail.com</owner_email>
     <items_per_page>50</items_per_page>
-    <html_template>/tmp/planet/index.html</html_template>
-    <atom_template>/tmp/planet/atom.xml</atom_template>
-    <output_dir>/tmp/planet/output</output_dir>
+    <html_template>./tushy/src/tushy/index.html</html_template>
+    <atom_template>./tushy/src/tushy/atom.xml</atom_template>
+    <output_dir>./tushy/src/tushy/output</output_dir>
+    <site_description>
+      Copyright &copy; 2009, Planet Clojure. No rights reserved.<br />
+      Planet Clojure is maintained by <a href=\"http://freegeek.in/\">Baishamapayan Ghose</a>.<br />
+      Clojure and the Clojure logo are Copyright &copy; 2008-2009, Rich Hickey.<br />
+      Theme by <a href=\"http://brajeshwar.com/\">Brajeshwar</a>.
+    </site_description>
   </site>
 
   <blog>
