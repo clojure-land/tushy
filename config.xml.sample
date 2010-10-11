@@ -9,10 +9,10 @@
     <atom_template>./tushy/src/tushy/atom.xml</atom_template>
     <output_dir>./tushy/src/tushy/output</output_dir>
     <site_description>
-      Copyright &copy; 2009, Planet Clojure. No rights reserved.<br />
-      Planet Clojure is maintained by <a href=\"http://freegeek.in/\">Baishamapayan Ghose</a>.<br />
-      Clojure and the Clojure logo are Copyright &copy; 2008-2009, Rich Hickey.<br />
-      Theme by <a href=\"http://brajeshwar.com/\">Brajeshwar</a>.
+      Copyright 2009, Planet Clojure. No rights reserved.<br />
+      Planet Clojure is maintained by <a href="http://freegeek.in/">Baishamapayan Ghose</a>.<br />
+      Clojure and the Clojure logo are Copyright 2008-2009, Rich Hickey.<br />
+      Theme by <a href="http://brajeshwar.com/">Brajeshwar</a>.
     </site_description>
   </site>
 
