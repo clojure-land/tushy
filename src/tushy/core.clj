@@ -1,13 +1,12 @@
 (ns tushy.core
-  (:require [clojure.zip :as zip]
-            [clojure.xml :as xml]
-            [clojure.contrib.duck-streams :as streams]
-            [net.cgrand.enlive-html :as html])
+  (:require [net.cgrand.enlive-html :as html])
   (:use [clojure.contrib.zip-filter.xml]
         [clj-time.format
          :only [formatters formatter parse]]
         [clj-time.coerce
-         :only [to-long]]))
+         :only [to-long]]
+        [tushy.defaults
+         :only [zip-str]]))
 
 (def date-formatters [(formatters :date-time)
                  (formatters :date-time-no-ms)
@@ -23,15 +22,10 @@
                                     (catch Exception _ nil))]]
                    date))))
 
-(defn zip-str
-  "Parse an xml file"
-  [s]
-  (zip/xml-zip (xml/parse (java.io.ByteArrayInputStream. (.getBytes s)))))
-
 (defn planet-map
   "Take an XML file and return a sequence of maps containing the author of each blog and the feed of his blog"
   [xml-file-name]
-  (let [xml-planet-info (zip-str (streams/slurp* xml-file-name))]
+  (let [xml-planet-info (zip-str xml-file-name)]
     (map #(zipmap [:author :feed] [%1 %2])
          (xml-> xml-planet-info :blog :author text)
          (xml-> xml-planet-info :blog :feed text))))
