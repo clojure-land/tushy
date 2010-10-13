@@ -34,12 +34,17 @@
 
 (def *section-sel* {[:.title] [[:.links (html/nth-of-type 1)]]})
 
-(html/defsnippet section-model "tushy/html_templates/index.html" *section-sel*
+(html/defsnippet section-model *template-file-name* *section-sel*
   [{title :title data :data} model]
   [:.title] (html/content title)
   [:.links] (html/content (map model data)))
 
-(html/deftemplate index "tushy/html_templates/index.html"
+(defn return-model-data
+  "Return a :title :data map which we will use with our models"
+  [title data]
+  {:title title :data data})
+
+(html/deftemplate index *template-file-name*
   [ctxt section-data]
   [:title] (html/content (get ctxt :site_name "No site name"))
   [:#header :#title] (html/content (get ctxt :site_title "No title given"))
