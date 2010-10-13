@@ -58,12 +58,12 @@
                                   :link :link  ;Atom is #FAIL
                                   }})
 (defn feed-map
-  "Create a map for the contents of each feed"
-  [feed-address feed-author]
-  (let [feed (fetch-feed feed-address)
+  "Create a map of posts for a planet entry"
+  [planet-entry]
+  (let [feed (fetch-feed (:feed planet-entry))
         ftype (feed-type feed)
         item-feed (html/select feed [(:item (feed-tag-definitions ftype))])]
-    (map #(zipmap [:title :pubDate :author] [%1 %2 feed-author]) ;Removed post for testing
+    (map #(zipmap [:title :pubDate :planet-entry] [%1 %2 planet-entry]) ;Removed post for testing
          (html/select item-feed [(:title (feed-tag-definitions ftype))
                                  text])
          (html/select item-feed [(:pubDate (feed-tag-definitions ftype))
@@ -77,8 +77,7 @@
   [a-planet-map]
   (cond
    (empty? a-planet-map) (quote ())
-   :else (concat (feed-map (:feed (first a-planet-map))
-                           (:author (first a-planet-map)))
+   :else (concat (feed-map (first a-planet-map))
                  (consolidated-feed-map (rest a-planet-map)))))
 
 (defn dated-feed-map
