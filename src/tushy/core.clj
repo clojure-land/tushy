@@ -5,8 +5,7 @@
          :only [formatters formatter parse]]
         [clj-time.coerce
          :only [to-long]]
-        [tushy.defaults
-         :only [zip-str]]))
+        [tushy.defaults]))
 
 (def date-formatters [(formatters :date-time)
                  (formatters :date-time-no-ms)
@@ -26,12 +25,10 @@
   "Take an XML file and return a sequence of maps containing the author of each blog and the feed of his blog"
   [xml-file-name]
   (let [xml-planet-info (zip-str xml-file-name)]
-    (map #(zipmap [:author :feed :addr :name]
-                  [%1 %2 %3 %4])
+    (map #(zipmap [:author :feed]
+                  [%1 %2])
          (xml-> xml-planet-info :blog :author text)
-         (xml-> xml-planet-info :blog :feed text)
-         (xml-> xml-planet-info :blog :addr text)
-         (xml-> xml-planet-info :blog :name text))))
+         (xml-> xml-planet-info :blog :feed text))))
 
 (defn fetch-feed
   "Fetch contents of blog feed"
@@ -50,11 +47,13 @@
                                  :pubDate :pubDate
                                  :post :description
                                  :item :item
+                                 :link :link
                                  }
                            :atom {:title :title
                                   :pubDate :published
                                   :post :content
                                   :item :entry
+                                  :link :link  ;Atom is #FAIL
                                   }})
 (defn feed-map
   "Create a map for the contents of each feed"
