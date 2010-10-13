@@ -5,6 +5,8 @@
 
 (def *xml-file-name* "/home/vedang/Work/tushy/config.xml.sample")
 
+(def *final-file-name* "/home/vedang/Work/tushy/src/tushy/html_templates/final.html")
+
 (defn zip-str
   "Parse an xml file"
   [f]
