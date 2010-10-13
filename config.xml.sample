@@ -1,6 +1,7 @@
 <config>
   <site>
     <name>Planet Clojure</name>
+    <title></title>
     <link>http://planet.clojure.in</link>
     <owner_name>Baishampayan Ghose</owner_name>
     <owner_email>b.ghose@gmail.com</owner_email>
