@@ -26,9 +26,12 @@
   "Take an XML file and return a sequence of maps containing the author of each blog and the feed of his blog"
   [xml-file-name]
   (let [xml-planet-info (zip-str xml-file-name)]
-    (map #(zipmap [:author :feed] [%1 %2])
+    (map #(zipmap [:author :feed :addr :name]
+                  [%1 %2 %3 %4])
          (xml-> xml-planet-info :blog :author text)
-         (xml-> xml-planet-info :blog :feed text))))
+         (xml-> xml-planet-info :blog :feed text)
+         (xml-> xml-planet-info :blog :addr text)
+         (xml-> xml-planet-info :blog :name text))))
 
 (defn fetch-feed
   "Fetch contents of blog feed"
