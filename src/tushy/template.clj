@@ -1,6 +1,7 @@
 (ns tushy.template
   (:require [net.cgrand.enlive-html :as html])
   (:use [tushy.defaults]
+        [tushy.core]
         [clojure.contrib.zip-filter.xml]))
 
 (defn generate-site-info
@@ -39,15 +40,32 @@
   [:.title] (html/content title)
   [:.content] (html/content (map model data)))
 
+(def *aside-sel* [:.aside])
+
+(html/defsnippet aside-section-model *template-file-name* *aside-sel*
+  [post-entry]
+  [:.title :a] (html/do->
+                (html/content (:author (:planet-entry post-entry)))
+                (html/set-attr :href (:addr (:planet-entry post-entry)))
+                (html/set-attr :title (:name (:planet-entry post-entry))))
+  [:.date] (html/content (:pubDate post-entry)))
+
+(def *post-section-sel* [[:.entry (html/nth-of-type 1)]])
+
+(html/defsnippet post-section-model *template-file-name* *post-section-sel*
+  [post-entry aside-model]
+  [:.aside] (html/content (aside-model post-entry)))
+;; [:.article] (html/content (article-model post-entry))
+
 (defn return-model-data
   "Return a :title :data map which we will use with our models"
   [title data]
   {:title title :data data})
 
 (html/deftemplate index *template-file-name*
-  [ctxt section-data]
-  [:title] (html/content (get ctxt :site_name "No site name"))
-  [:#header :#title] (html/content (get ctxt :site_title "No title given"))
-  [:.sidebar-list#Subscriptions] (html/content (sidebar-section-model section-data link-model))
-  [:footer#footer :p] (html/content (get ctxt :site_copyright "No site description")))
-
+  [site-data subscription-data post-data]
+  [:title] (html/content (get site-data :site_name "No site name"))
+  [:#header :#title] (html/content (get site-data :site_title "No title given"))
+  [:.sidebar-list#Subscriptions] (html/content (sidebar-section-model (return-model-data "Subscriptions" subscription-data) link-model))
+  [:.posts] (html/content (map #(post-section-model % aside-section-model) post-data))
+  [:footer#footer :p] (html/content (get site-data :site_copyright "No site description")))
