@@ -32,12 +32,12 @@
         (html/content text)
         (html/set-attr :href href)))
 
-(def *section-sel* {[:.title] [[:.links (html/nth-of-type 1)]]})
+(def *sidebar-section-sel* {[:.title] [[:.content (html/nth-of-type 1)]]})
 
-(html/defsnippet section-model *template-file-name* *section-sel*
+(html/defsnippet sidebar-section-model *template-file-name* *sidebar-section-sel*
   [{title :title data :data} model]
   [:.title] (html/content title)
-  [:.links] (html/content (map model data)))
+  [:.content] (html/content (map model data)))
 
 (defn return-model-data
   "Return a :title :data map which we will use with our models"
@@ -48,6 +48,6 @@
   [ctxt section-data]
   [:title] (html/content (get ctxt :site_name "No site name"))
   [:#header :#title] (html/content (get ctxt :site_title "No title given"))
-  [:.sidebar-list#Subscriptions] (html/content (section-model section-data link-model))
+  [:.sidebar-list#Subscriptions] (html/content (sidebar-section-model section-data link-model))
   [:footer#footer :p] (html/content (get ctxt :site_copyright "No site description")))
 
