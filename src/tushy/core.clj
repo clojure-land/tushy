@@ -63,14 +63,13 @@
   (let [feed (fetch-feed (:feed planet-entry))
         ftype (feed-type feed)
         item-feed (html/select feed [(:item (feed-tag-definitions ftype))])]
-    (map #(zipmap [:title :pubDate :planet-entry] [%1 %2 planet-entry]) ;Removed post for testing
+    (map #(zipmap [:title :pubDate :post :planet-entry] [%1 %2 %3 planet-entry])
          (html/select item-feed [(:title (feed-tag-definitions ftype))
                                  text])
          (html/select item-feed [(:pubDate (feed-tag-definitions ftype))
                                  text])
-         ;; (html/select item-feed [(:post (feed-tag-definitions ftype))
-         ;;                         text])
-         )))
+         (html/select item-feed [(:post (feed-tag-definitions ftype))
+                                 text]))))
 
 (defn consolidated-feed-map
   "Create a single map containing the posts from all the feeds mentioned in the planet-map"
