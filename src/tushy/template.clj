@@ -50,12 +50,24 @@
                 (html/set-attr :title (:name (:planet-entry post-entry))))
   [:.date] (html/content (:pubDate post-entry)))
 
+(def *article-sel* [:.article])
+
+(html/defsnippet article-section-model *template-file-name* *article-sel*
+  [post-entry]
+  [:.title :a] (html/do->
+                (html/content (:title post-entry))
+                ;; (html/set-attr :href (get post-entry :link "nolink"))
+                )
+  [:.post-content] (html/html-content (:post post-entry))
+  ;; [:.meta] [:a] (html/set-attr :href (get post-entry :link "nolink"))
+  )
+
 (def *post-section-sel* [[:.entry (html/nth-of-type 1)]])
 
 (html/defsnippet post-section-model *template-file-name* *post-section-sel*
-  [post-entry aside-model]
-  [:.aside] (html/content (aside-model post-entry)))
-;; [:.article] (html/content (article-model post-entry))
+  [post-entry aside-model article-model]
+  [:.aside] (html/content (aside-model post-entry))
+  [:.article] (html/content (article-model post-entry)))
 
 (defn return-model-data
   "Return a :title :data map which we will use with our models"
@@ -67,5 +79,5 @@
   [:title] (html/content (get site-data :site_name "No site name"))
   [:#header :#title] (html/content (get site-data :site_title "No title given"))
   [:.sidebar-list#Subscriptions] (html/content (sidebar-section-model (return-model-data "Subscriptions" subscription-data) link-model))
-  [:.posts] (html/content (map #(post-section-model % aside-section-model) post-data))
-  [:footer#footer :p] (html/content (get site-data :site_copyright "No site description")))
+  [:.posts] (html/content (map #(post-section-model % aside-section-model article-section-model) post-data))
+  [:footer#footer :p] (html/html-content (get site-data :site_copyright "No site description")))
