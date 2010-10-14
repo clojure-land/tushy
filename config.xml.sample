@@ -8,7 +8,7 @@
     <items_per_page>50</items_per_page>
     <html_template>tushy/html_templates/index.html</html_template>
     <atom_template>./tushy/src/tushy/atom.xml</atom_template>
-    <output_file>tushy/html_templates/final.html</output_file>
+    <output_file>/home/vedang/Work/tushy/src/tushy/html_templates/final.html</output_file>
     <site_copyright>
       Copyright 2009, Planet Clojure. No rights reserved.<br />
       Planet Clojure is maintained by <a href="http://freegeek.in/">Baishamapayan Ghose</a>.<br />
@@ -29,5 +29,19 @@
     <feed>http://learnclojure.blogspot.com/feeds/posts/default</feed>
     <addr>http://learnclojure.blogspot.com</addr>
     <name>Learning Clojure</name>
+  </blog>
+
+  <blog>
+    <author>Toni Batchelli</author>
+    <feed>http://feeds.feedburner.com/disclojure</feed>
+    <addr>http://disclojure.org/</addr>
+    <name>Disclojure</name>
+  </blog>
+
+  <blog>
+    <author>Matthew Maravillas</author>
+    <feed>http://matthewm.net/blog/category/programming/clojure-programming/feed/</feed>
+    <addr>http://matthew.net/blog</addr>
+    <name>Free Lunch</name>
   </blog>
 </config>
